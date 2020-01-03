@@ -8,4 +8,8 @@ class ThreadUtil {
 
     static Predicate<Object> notInterrupted = o -> !Thread.currentThread().isInterrupted();
 
+    static void joinAll(Thread... threads) throws InterruptedException {
+        for (Thread thread : threads) thread.join();
+    }
+
 }

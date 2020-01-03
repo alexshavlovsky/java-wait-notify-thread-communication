@@ -2,11 +2,11 @@ class ConcurrentBuffer {
 
     private String payload;
     private boolean bufferContainsPayload = false;
-    private boolean isInterrupted = false;
+    volatile private boolean isCompleted = false;
 
     synchronized String read() {
         while (!bufferContainsPayload) {
-            if (isInterrupted) {
+            if (isCompleted) {
                 Thread.currentThread().interrupt();
                 return null;
             }
@@ -24,7 +24,7 @@ class ConcurrentBuffer {
     }
 
     synchronized void write(String res) {
-        if (isInterrupted) {
+        if (isCompleted) {
             Thread.currentThread().interrupt();
             return;
         }
@@ -42,8 +42,8 @@ class ConcurrentBuffer {
         this.notifyAll();
     }
 
-    synchronized void interrupt() {
-        isInterrupted = true;
+    void setCompleted() {
+        isCompleted = true;
     }
 
 }

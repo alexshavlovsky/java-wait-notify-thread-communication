@@ -1,5 +1,4 @@
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -7,8 +6,14 @@ public class Consumer implements Runnable {
 
     private final ConcurrentBuffer concurrentBuffer;
 
-    Consumer(ConcurrentBuffer concurrentBuffer) {
+    private Consumer(ConcurrentBuffer concurrentBuffer) {
         this.concurrentBuffer = concurrentBuffer;
+    }
+
+    static Thread newInstance(ConcurrentBuffer concurrentBuffer, String name) {
+        Thread consumer = new Thread(new Consumer(concurrentBuffer), name);
+        consumer.start();
+        return consumer;
     }
 
     @Override
