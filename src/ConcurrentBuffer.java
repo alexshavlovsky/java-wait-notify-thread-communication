@@ -1,10 +1,10 @@
-class ConcurrentBuffer {
+class ConcurrentBuffer<T> {
 
-    private String payload;
+    private T payload;
     private boolean bufferContainsPayload = false;
     volatile private boolean isCompleted = false;
 
-    synchronized String read() {
+    synchronized T read() {
         while (!bufferContainsPayload) {
             if (isCompleted) {
                 Thread.currentThread().interrupt();
@@ -23,7 +23,7 @@ class ConcurrentBuffer {
         return payload;
     }
 
-    synchronized void write(String res) {
+    synchronized void write(T payload) {
         if (isCompleted) {
             Thread.currentThread().interrupt();
             return;
@@ -38,7 +38,7 @@ class ConcurrentBuffer {
             }
         }
         bufferContainsPayload = true;
-        payload = res;
+        this.payload = payload;
         this.notifyAll();
     }
 
