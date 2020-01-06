@@ -7,15 +7,15 @@ import java.util.stream.Stream;
 
 public final class Producer<T> extends AbstractProducer<T> {
 
-    private Producer(ConcurrentBuffer<T> concurrentBuffer, Stream<T> stream) {
+    private Producer(AbstractConcurrentBuffer<T> concurrentBuffer, Stream<T> stream) {
         super(concurrentBuffer, stream);
     }
 
-    public static <T> Thread newInstance(ConcurrentBuffer<T> concurrentBuffer, Stream<T> stream, String name) {
+    public static <T> Thread newInstance(AbstractConcurrentBuffer<T> concurrentBuffer, Stream<T> stream, String name) {
         return newInstance(new Producer<>(concurrentBuffer, stream), name);
     }
 
-    public static <T> Thread newInstance(ConcurrentBuffer<T> concurrentBuffer, T[] array, String name) {
+    public static <T> Thread newInstance(AbstractConcurrentBuffer<T> concurrentBuffer, T[] array, String name) {
         return newInstance(new Producer<>(concurrentBuffer, Arrays.stream(array)), name);
     }
 

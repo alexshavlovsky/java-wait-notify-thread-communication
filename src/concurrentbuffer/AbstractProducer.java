@@ -1,6 +1,5 @@
 package concurrentbuffer;
 
-import java.util.Arrays;
 import java.util.stream.Stream;
 
 abstract class AbstractProducer<T> implements Runnable {

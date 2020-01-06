@@ -1,11 +1,17 @@
 package concurrentbuffer;
 
-public final class ConcurrentBuffer<T> extends AbstractConcurrentBuffer<T> {
-    private T payload;
-    private boolean bufferContainsPayload;
+import java.util.LinkedList;
+
+public final class ConcurrentQueue<T> extends AbstractConcurrentBuffer<T> {
+    private LinkedList<T> queue = new LinkedList<>();
+    private int maxSize;
+
+    public ConcurrentQueue(int maxSize) {
+        this.maxSize = maxSize;
+    }
 
     synchronized T read() {
-        while (!bufferContainsPayload) {
+        while (queue.size() == 0) {
             if (isCompleted) {
                 Thread.currentThread().interrupt();
                 return null;
@@ -19,8 +25,7 @@ public final class ConcurrentBuffer<T> extends AbstractConcurrentBuffer<T> {
             }
         }
         this.notifyAll();
-        bufferContainsPayload = false;
-        return payload;
+        return queue.pop();
     }
 
     synchronized void write(T payload) {
@@ -28,7 +33,7 @@ public final class ConcurrentBuffer<T> extends AbstractConcurrentBuffer<T> {
             Thread.currentThread().interrupt();
             return;
         }
-        while (bufferContainsPayload) {
+        while (queue.size() == maxSize) {
             try {
                 this.wait();
             } catch (InterruptedException e) {
@@ -37,9 +42,9 @@ public final class ConcurrentBuffer<T> extends AbstractConcurrentBuffer<T> {
                 return;
             }
         }
+        queue.push(payload);
         this.notifyAll();
-        bufferContainsPayload = true;
-        this.payload = payload;
     }
+
 
 }

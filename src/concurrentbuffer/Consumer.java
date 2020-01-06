@@ -6,11 +6,11 @@ import java.util.stream.Stream;
 
 public final class Consumer<T> extends AbstractConsumer<T> {
 
-    private Consumer(ConcurrentBuffer<T> concurrentBuffer, ConsumerStrategy<T> strategy) {
+    private Consumer(AbstractConcurrentBuffer<T> concurrentBuffer, ConsumerStrategy<T> strategy) {
         super(concurrentBuffer, strategy);
     }
 
-    public static <T> Thread newInstance(ConcurrentBuffer<T> concurrentBuffer, ConsumerStrategy<T> consumerStrategy, String name) {
+    public static <T> Thread newInstance(AbstractConcurrentBuffer<T> concurrentBuffer, ConsumerStrategy<T> consumerStrategy, String name) {
         return newInstance(new Consumer<>(concurrentBuffer, consumerStrategy), name);
     }
 

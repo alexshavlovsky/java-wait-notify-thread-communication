@@ -11,7 +11,8 @@ public class Example {
         String[] source2 = new String[]{"payload A", "payload B", "payload C", "payload D", "payload E"};
 
         // instantiate a buffer
-        ConcurrentBuffer<String> buffer = new ConcurrentBuffer<>();
+        //ConcurrentBuffer<String> buffer = new ConcurrentBuffer<>();
+        ConcurrentQueue<String> buffer = new ConcurrentQueue<>(3);
 
         // instantiate a consumer strategy
         ConsumerStrategy<String> strategy = payload -> {
