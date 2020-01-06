@@ -1,8 +1,8 @@
-class ConcurrentBuffer<T> {
+package concurrentbuffer;
 
+public final class ConcurrentBuffer<T> extends AbstractConcurrentBuffer<T> {
     private T payload;
-    private boolean bufferContainsPayload = false;
-    volatile private boolean isCompleted = false;
+    private boolean bufferContainsPayload;
 
     synchronized T read() {
         while (!bufferContainsPayload) {
@@ -40,10 +40,6 @@ class ConcurrentBuffer<T> {
         bufferContainsPayload = true;
         this.payload = payload;
         this.notifyAll();
-    }
-
-    void setCompleted() {
-        isCompleted = true;
     }
 
 }
